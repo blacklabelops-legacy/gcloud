@@ -20,7 +20,7 @@ $ docker run -it --rm \
 > Lists your instances inside the specified cloud project. Note: Auth credentials are inside the file
 auth.json.
 
-Set up a Cron Schedule and manages the cloud!
+You can even set up a Cron Schedule and manage the cloud!
 
 ~~~~
 $ docker run --rm \
@@ -37,6 +37,7 @@ $ cat logs/gcloud.log
 
 * Managing backups by pushing files to Cloud Storage and Buckets.
 * Restoring backups from Cloud Storage and Buckets into containers.
+* Executing Long Running File Transfers.
 
 # Google Cloud API
 
