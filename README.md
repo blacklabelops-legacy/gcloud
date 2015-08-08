@@ -1,6 +1,8 @@
 This is a container stuffed with the latest Google Cloud SDK along with all modules. It is the easiest way to
 run commands against your cloud instances, apps, switch projects and regions!
 
+Furthermore, you can schedule your commands with cron in order to manage the cloud!
+
 # Make It Short!
 
 In short, you can run Google Cloud SDK commands against your cloud projects with this container. Just by executing:
@@ -17,6 +19,19 @@ $ docker run -it --rm \
 
 > Lists your instances inside the specified cloud project. Note: Auth credentials are inside the file
 auth.json.
+
+Set up a Cron Schedule and manages the cloud!
+
+~~~~
+$ docker run --rm \
+	  -v $(pwd)/logs/:/logs \
+    -e "GCLOUD_ACCOUNT=$(base64 auth.json)" \
+    -e "GCLOUD_CRON=$(base64 example-crontab.txt)" \
+    blacklabelops/gcloud
+$ cat logs/gcloud.log
+~~~~
+
+> Will start the schedule and log to the local log folder. The cron schedule is defined inside the file example-crontab.txt.
 
 # Google Cloud API
 
@@ -95,6 +110,51 @@ $ gcloud compute regions describe ${CLOUDSDK_COMPUTE_REGION}
 ~~~~
 
 > Set your region and zone to belgium. More details appear with the `describe` command.
+
+# Cron Scheduling
+
+This container can manage gcloud instances using cron. The crontab can be mounted or simply converted into
+a base64 string and configured inside the container over environment variables.
+
+An working example crontab can be found here: [example-crontab.txt](example-crontab.txt)
+
+Please note that in the case of cron triggering commands, the environment variables have
+to be configured inside the crontab. See my example file for details.
+
+Also note that when you need to include your own scripts then you just have to extend this container.
+
+Mounting a crontab:
+
+~~~~
+$ docker run --rm \
+	  -v $(pwd)/example-crontab.txt:/example-crontab.txt \
+    -v $(pwd)/logs/:/logs \
+    -e "GCLOUD_CRONFILE=/example-crontab.txt" \
+    -e "GCLOUD_ACCOUNT=$(base64 auth.json)" \
+    -e "GCLOUD_CRON=$(base64 example-crontab.txt)" \
+    blacklabelops/gcloud
+~~~~
+
+> Needs an environment variable in order to tell the entryscript where to find the crontab.
+
+Using a Base64 encoded crontab:
+
+~~~~
+$ docker run --rm \
+	  -v $(pwd)/logs/:/logs \
+    -e "GCLOUD_ACCOUNT=$(base64 auth.json)" \
+    -e "GCLOUD_CRON=$(base64 example-crontab.txt)" \
+    blacklabelops/gcloud
+~~~~
+
+> The authentication file and crontab are encoded on the fly.
+
+# Container Logging
+
+I use this containers for logging:
+
+* [blacklabelops/fluentd](https://github.com/blacklabelops/fluentd)
+* [blacklabelops/loggly](https://github.com/blacklabelops/fluentd/tree/master/fluentd-loggly)
 
 # References
 
