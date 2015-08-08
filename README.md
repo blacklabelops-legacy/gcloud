@@ -162,6 +162,44 @@ I use this containers for logging:
 * [blacklabelops/fluentd](https://github.com/blacklabelops/fluentd)
 * [blacklabelops/loggly](https://github.com/blacklabelops/fluentd/tree/master/fluentd-loggly)
 
+# Google Storage Container Backups
+
+First run the Jenkins example container:
+
+~~~~
+docker run -d -p 8090:8080 --name jenkins_jenkins_1 blacklabelops/jenkins
+~~~~
+
+> This will pull the container and start the latest jenkins on port 8090
+
+Instant backup of the jenkins volume using a run-once container:
+
+~~~~
+$ docker run \
+  --volumes-from jenkins_jenkins_1 \
+  -v $(pwd)/backups/:/backups \
+  -v $(pwd)/logs/:/logs \
+  -e "GCLOUD_ACCOUNT=$(base64 auth.json)" \
+  blacklabelops/gcloud \
+  bash -c "cd /jenkins/ && tar -czvf /backups/JenkinsBackup$(date +%Y-%m-%d-%H-%M-%S).tar.gz * && gsutil rsync /backups gs://jenkinsbackups"
+~~~~
+
+> Note: You need a cloud storage named `jenkinsbackups` to make this work
+
+Now the cron example with a prefixed schedule:
+
+~~~~
+$ docker run \
+  --volumes-from jenkins_jenkins_1 \
+  -v $(pwd)/backups/:/backups \
+  -v $(pwd)/logs/:/logs \
+  -e "GCLOUD_ACCOUNT=$(base64 auth.json)" \
+  -e "GCLOUD_CRON=$(base64 example-crontab-backup.txt)" \
+  blacklabelops/gcloud
+~~~~
+
+> Backup using cron schedule.
+
 # References
 
 * [Docker Homepage](https://www.docker.com/)

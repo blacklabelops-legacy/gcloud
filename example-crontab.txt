@@ -2,4 +2,4 @@ PATH=/opt/google-cloud-sdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
 CLOUDSDK_CORE_PROJECT=example-project
 CLOUDSDK_COMPUTE_ZONE=europe-west1-b
 CLOUDSDK_COMPUTE_REGION=europe-west1
-* * * * * gcloud config list 2>&1 | sed -e "s/^/$(date -R) /" | tee -a /logs/gcloud.log
+* * * * * gcloud config list 2>&1 | sed -e "s/^/$(date +\%Y-\%m-\%d-\%H-\%M-\%S) /" | tee -a /logs/gcloud.log

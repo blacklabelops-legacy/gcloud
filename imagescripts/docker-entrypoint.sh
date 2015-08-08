@@ -26,8 +26,8 @@ if [ -n "${GCLOUD_CRONFILE}" ]; then
   crontab -l
 fi
 
-if [ "$1" = 'supervisord' ]; then
-  exec /usr/bin/supervisord -n -c /etc/supervisord.conf
+if [ "$1" = 'cron' ]; then
+  exec crond -n -x sch
 fi
 
 exec "$@"
