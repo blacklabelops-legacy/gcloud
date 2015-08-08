@@ -33,6 +33,11 @@ $ cat logs/gcloud.log
 
 > Will start the schedule and log to the local log folder. The cron schedule is defined inside the file example-crontab.txt.
 
+# Use Cases
+
+* Managing backups by pushing files to Cloud Storage and Buckets.
+* Restoring backups from Cloud Storage and Buckets into containers.
+
 # Google Cloud API
 
 You can only run commands against existing cloud projects!
