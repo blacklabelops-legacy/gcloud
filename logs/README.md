@@ -1,1 +1,1 @@
-Logs will be placed here.
+Logs should be placed here.

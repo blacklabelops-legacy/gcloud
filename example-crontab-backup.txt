@@ -1,0 +1,5 @@
+PATH=/opt/google-cloud-sdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+CLOUDSDK_CORE_PROJECT=example-project
+CLOUDSDK_COMPUTE_ZONE=europe-west1-b
+CLOUDSDK_COMPUTE_REGION=europe-west1
+* * * * * bash "cd /jenkins && tar -czvf /backups/JenkinsBackup$(date +%Y-%m-%d-%H-%M-%S).tar.gz * && gsutil rsync /backups gs://jenkinsbackups" 2>&1 | sed -e "s/^/$(date -R) /" | tee -a /logs/backup.log

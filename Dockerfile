@@ -9,6 +9,7 @@ RUN yum install -y \
 # install dev tools
 RUN yum install -y \
     wget \
+    tar \
     unzip \
     supervisor \
     vi \
