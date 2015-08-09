@@ -26,8 +26,15 @@ if [ -n "${GCLOUD_CRONFILE}" ]; then
   crontab -l
 fi
 
+log_command=""
+
+if [ -n "${LOG_FILE}" ]; then
+  log_command=" 2>&1 | tee -a "${LOG_FILE}
+fi
+
 if [ "$1" = 'cron' ]; then
-  exec crond -n -x sch 2>&1 | tee -a /var/log/cron.log
+  croncommand="crond -n -x sch"${log_command}
+  bash -c "${croncommand}"
 fi
 
 exec "$@"

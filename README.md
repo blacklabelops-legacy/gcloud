@@ -132,7 +132,7 @@ Also note that when you need to include your own scripts then you just have to e
 Mounting a crontab:
 
 ~~~~
-$ docker run --rm \
+$ docker run -d \
 	  -v $(pwd)/example-crontab.txt:/example-crontab.txt \
     -v $(pwd)/logs/:/logs \
     -e "GCLOUD_CRONFILE=/example-crontab.txt" \
@@ -146,7 +146,7 @@ $ docker run --rm \
 Using a Base64 encoded crontab:
 
 ~~~~
-$ docker run --rm \
+$ docker run -d \
 	  -v $(pwd)/logs/:/logs \
     -e "GCLOUD_ACCOUNT=$(base64 auth.json)" \
     -e "GCLOUD_CRON=$(base64 example-crontab.txt)" \
@@ -155,12 +155,43 @@ $ docker run --rm \
 
 > The authentication file and crontab are encoded on the fly.
 
-# Container Logging
+# Google Cloud SDK Logging
 
-I use this containers for logging:
+This container does not write a logfile by default. It's considered bad practise as logs
+should be accessed by the command `docker logs`. There are use case where you want to
+have additional log files, e.g. my use case is to relay log to Loggly [Loggly Homepage](https://www.loggly.com/).
+I have added a routine for logging and it's activated by defining a logfile.
 
-* [blacklabelops/fluentd](https://github.com/blacklabelops/fluentd)
-* [blacklabelops/loggly](https://github.com/blacklabelops/fluentd/tree/master/fluentd-loggly)
+Environment Variable: LOG_FILE
+
+Example for a separate volume with a logfile:
+
+~~~~
+$ docker run -d \
+    --name gcloudcron \
+	  -v $(pwd)/logs/:/gcloudlogs \
+	  -e "LOG_FILE=/gcloudlogs/cron.log" \
+    -e "GCLOUD_ACCOUNT=$(base64 auth.json)" \
+    -e "GCLOUD_CRON=$(base64 example-crontab.txt)" \
+    blacklabelops/gcloud
+~~~~
+
+> You can watch the log by typing `cat ./logs/cron.log`.
+
+Now lets hook up the container with my Loggly side-car container and relay the log to Loggly! The Full
+documentation of the loggly container can be found here: [blacklabelops/loggly](https://github.com/blacklabelops/fluentd/tree/master/fluentd-loggly)
+
+~~~~
+$ docker run -d \
+  --volumes-from gcloudcron \
+  -e "LOGS_DIRECTORIES=/gcloudlogs" \
+	-e "LOGGLY_TOKEN=412e12ee-12e12e1-12e12e-12e12e" \
+  -e "LOGGLY_TAG=gcloudlog" \
+  --name gcloudloggly \
+  blacklabelops/loggly
+~~~~
+
+> Note: You need a valid Loggly Customer Key in order to log to Loggly.
 
 # Google Storage Container Backups
 
