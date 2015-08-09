@@ -27,7 +27,7 @@ if [ -n "${GCLOUD_CRONFILE}" ]; then
 fi
 
 if [ "$1" = 'cron' ]; then
-  exec crond -n -x sch
+  exec crond -n -x sch 2>&1 | tee -a /var/log/cron.log
 fi
 
 exec "$@"
