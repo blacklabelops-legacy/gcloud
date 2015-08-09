@@ -194,7 +194,7 @@ $ docker run \
   -v $(pwd)/backups/:/backups \
   -v $(pwd)/logs/:/logs \
   -e "GCLOUD_ACCOUNT=$(base64 auth.json)" \
-  -e "GCLOUD_CRON=$(base64 example-crontab-backup.txt)" \
+  -e "GCLOUD_CRON=$(base64 example-crontab.backup.txt)" \
   blacklabelops/gcloud
 ~~~~
 
