@@ -33,7 +33,7 @@ if [ -n "${LOG_FILE}" ]; then
 fi
 
 if [ -n "${DELAYED_START}" ]; then
-  exec sleep ${DELAYED_START}
+  sleep ${DELAYED_START}
 fi
 
 if [ "$1" = 'cron' ]; then
