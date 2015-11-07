@@ -1,6 +1,8 @@
 This is a container stuffed with the latest Google Cloud SDK along with all modules. It is the easiest way to
 run commands against your cloud instances, apps, switch projects and regions!
 
+Leave a message and ask questions on Hipchat: [blacklabelops/hipchat](https://www.hipchat.com/geogBFvEM)
+
 Furthermore, you can schedule your commands with cron in order to manage the cloud!
 
 # Make It Short!
