@@ -12,6 +12,7 @@ In short, you can run Google Cloud SDK commands against your cloud projects with
 ~~~~
 $ docker run -it --rm \
     -e "GCLOUD_ACCOUNT=$(base64 auth.json)" \
+    -e "GCLOUD_ACCOUNT_EMAIL=useraccount@developer.gserviceaccount.com" \
     -e "CLOUDSDK_CORE_PROJECT=example-project" \
     -e "CLOUDSDK_COMPUTE_ZONE=europe-west1-b" \
     -e "CLOUDSDK_COMPUTE_REGION=europe-west1" \
@@ -28,6 +29,7 @@ You can even set up a Cron Schedule and manage the cloud!
 $ docker run --rm \
 	  -v $(pwd)/logs/:/logs \
     -e "GCLOUD_ACCOUNT=$(base64 auth.json)" \
+    -e "GCLOUD_ACCOUNT_EMAIL=useraccount@developer.gserviceaccount.com" \
     -e "GCLOUD_CRON=$(base64 example-crontab.txt)" \
     blacklabelops/gcloud
 $ cat logs/gcloud.log
@@ -62,6 +64,7 @@ You can now mount the file into your container and execute commands like this:
 $ docker run -it --rm \
     -v $(pwd)/auth.json:/auth.json \
     -e "GCLOUD_ACCOUNT_FILE=/auth.json" \
+    -e "GCLOUD_ACCOUNT_EMAIL=useraccount@developer.gserviceaccount.com" \
     blacklabelops/gcloud \
     bash
 $ gcloud compute instances list
@@ -74,6 +77,7 @@ You can also Base64 encode the authentication file and stuff it inside an enviro
 ~~~~
 $ docker run -it --rm \
     -e "GCLOUD_ACCOUNT=$(base64 auth.json)" \
+    -e "GCLOUD_ACCOUNT_EMAIL=useraccount@developer.gserviceaccount.com" \
     blacklabelops/gcloud \
     bash
 $ gcloud compute instances list
@@ -88,6 +92,7 @@ Set your default Google Project by defining the CLOUDSDK_CORE_PROJECT environmen
 ~~~~
 $ docker run -it --rm \
     -e "GCLOUD_ACCOUNT=$(base64 auth.json)" \
+    -e "GCLOUD_ACCOUNT_EMAIL=useraccount@developer.gserviceaccount.com" \
     -e "CLOUDSDK_CORE_PROJECT=example-project" \
     blacklabelops/gcloud \
     bash
@@ -108,6 +113,7 @@ Example:
 ~~~~
 $ docker run -it --rm \
     -e "GCLOUD_ACCOUNT=$(base64 auth.json)" \
+    -e "GCLOUD_ACCOUNT_EMAIL=useraccount@developer.gserviceaccount.com" \
     -e "CLOUDSDK_CORE_PROJECT=example-project" \
     -e "CLOUDSDK_COMPUTE_ZONE=europe-west1-b" \
     -e "CLOUDSDK_COMPUTE_REGION=europe-west1" \
@@ -139,6 +145,7 @@ $ docker run -d \
     -v $(pwd)/logs/:/logs \
     -e "GCLOUD_CRONFILE=/example-crontab.txt" \
     -e "GCLOUD_ACCOUNT=$(base64 auth.json)" \
+    -e "GCLOUD_ACCOUNT_EMAIL=useraccount@developer.gserviceaccount.com" \
     -e "GCLOUD_CRON=$(base64 example-crontab.txt)" \
     blacklabelops/gcloud
 ~~~~
@@ -151,6 +158,7 @@ Using a Base64 encoded crontab:
 $ docker run -d \
 	  -v $(pwd)/logs/:/logs \
     -e "GCLOUD_ACCOUNT=$(base64 auth.json)" \
+    -e "GCLOUD_ACCOUNT_EMAIL=useraccount@developer.gserviceaccount.com" \
     -e "GCLOUD_CRON=$(base64 example-crontab.txt)" \
     blacklabelops/gcloud
 ~~~~
@@ -174,6 +182,7 @@ $ docker run -d \
 	  -v $(pwd)/logs/:/gcloudlogs \
 	  -e "LOG_FILE=/gcloudlogs/cron.log" \
     -e "GCLOUD_ACCOUNT=$(base64 auth.json)" \
+    -e "GCLOUD_ACCOUNT_EMAIL=useraccount@developer.gserviceaccount.com" \
     -e "GCLOUD_CRON=$(base64 example-crontab.txt)" \
     blacklabelops/gcloud
 ~~~~
@@ -213,6 +222,7 @@ $ docker run \
   -v $(pwd)/backups/:/backups \
   -v $(pwd)/logs/:/logs \
   -e "GCLOUD_ACCOUNT=$(base64 auth.json)" \
+  -e "GCLOUD_ACCOUNT_EMAIL=useraccount@developer.gserviceaccount.com" \
   blacklabelops/gcloud \
   bash -c "cd /jenkins/ && tar -czvf /backups/JenkinsBackup$(date +%Y-%m-%d-%H-%M-%S).tar.gz * && gsutil rsync /backups gs://jenkinsbackups"
 ~~~~
@@ -227,6 +237,7 @@ $ docker run \
   -v $(pwd)/backups/:/backups \
   -v $(pwd)/logs/:/logs \
   -e "GCLOUD_ACCOUNT=$(base64 auth.json)" \
+  -e "GCLOUD_ACCOUNT_EMAIL=useraccount@developer.gserviceaccount.com" \
   -e "GCLOUD_CRON=$(base64 example-crontab.backup.txt)" \
   blacklabelops/gcloud
 ~~~~
