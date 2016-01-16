@@ -7,6 +7,7 @@ RUN yum install -y \
     tar \
     unzip \
     vi \
+    rsync \
     cronie && \
     yum clean all && rm -rf /var/cache/yum/*
 
